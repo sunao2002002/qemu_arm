@@ -11,7 +11,7 @@ rootfs:
 	mke2fs rootfs.img
 	[ -d ${PWD}/mnt_tmp ] || mkdir -p ${PWD}/mnt_tmp
 	mount -t ext2 -o loop rootfs.img ${PWD}/mnt_tmp
-	cp -rvf _rootfs/* ${PWD}/mnt_tmp
+	cp -rf _rootfs/* ${PWD}/mnt_tmp
 	sync
 	umount ${PWD}/mnt_tmp
 
@@ -44,4 +44,4 @@ dbg:
 gdb:
 	${CROSS_COMPILE}gdb -q -s ${OUT}/vmlinux -d linux -ex "target remote localhost:1234"
 clean:
-	-rm -rf zImage *.dtb out rootfs.img
+	-rm -rf zImage *.dtb out rootfs.img mnt_tmp
