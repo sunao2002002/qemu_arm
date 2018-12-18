@@ -6,7 +6,14 @@ OUT=${PWD}/out
 CPUS=$(shell grep processor /proc/cpuinfo |wc -l)
 
 rootfs:
-	cd _rootfs; find . |cpio --quiet -H newc -o |gzip -9 -n >${PWD}/rootfs.cpio.gz
+	-rm rootfs.img
+	dd if=/dev/zero of=rootfs.img bs=4K count=32K
+	mke2fs rootfs.img
+	[ -d ${PWD}/mnt_tmp ] || mkdir -p ${PWD}/mnt_tmp
+	mount -t ext2 -o loop rootfs.img ${PWD}/mnt_tmp
+	cp -rvf _rootfs/* ${PWD}/mnt_tmp
+	sync
+	umount ${PWD}/mnt_tmp
 
 defconfig:
 	[ -d ${OUT} ] || mkdir -p ${OUT}
@@ -24,17 +31,17 @@ run:
 	qemu-system-arm -M vexpress-a9 -m 1024M -nographic \
 		-kernel ./zImage \
 		-dtb vexpress-v2p-ca9.dtb \
-		-sd ./rootfs.ext2 \
+		-sd ./rootfs.img \
 		-append "root=/dev/mmcblk0 console=ttyAMA0 loglevel=8" 
 
 dbg:
 	qemu-system-arm -M vexpress-a9 -m 1024M -nographic \
 		-kernel ./zImage \
 		-dtb vexpress-v2p-ca9.dtb \
-		-sd ./rootfs.ext2 \
+		-sd ./rootfs.img \
 		-append "root=/dev/mmcblk0 console=ttyAMA0 loglevel=8" \
 		-s -S
 gdb:
 	${CROSS_COMPILE}gdb -s ${OUT}/vmlinux
 clean:
-	-rm -rf zImage *.dtb out
+	-rm -rf zImage *.dtb out rootfs.img
