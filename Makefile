@@ -42,6 +42,6 @@ dbg:
 		-append "root=/dev/mmcblk0 console=ttyAMA0 loglevel=8" \
 		-s -S
 gdb:
-	${CROSS_COMPILE}gdb -s ${OUT}/vmlinux
+	${CROSS_COMPILE}gdb -q -s ${OUT}/vmlinux -d linux -ex "target remote localhost:1234"
 clean:
 	-rm -rf zImage *.dtb out rootfs.img
