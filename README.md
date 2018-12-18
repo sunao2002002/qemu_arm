@@ -17,11 +17,16 @@ do some change
 ```
 make kernel
 ```
-
+## 根文件系统
+```
+sudo make rootfs
+```
+由于生成文件系统时需要执行mount/umount等特权指令，所以需要sudo执行。
 ##  运行
 ```
 make run
 ```
+提示登陆时，输入用户名 root，不需要密码
 ## gdb调试
 打开两个terminal或者用tmux等工具开两个panel。
 第一个运行“make dbg”，第二个窗口运行“make gdb”
