@@ -1,0 +1,6 @@
+out
+rootfs.img
+*.dtb
+zImage
+*.dtb
+mnt_tmp
