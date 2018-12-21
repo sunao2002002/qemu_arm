@@ -4,3 +4,4 @@ rootfs.img
 zImage
 *.dtb
 mnt_tmp
+_rootfs/lib/modules/*
