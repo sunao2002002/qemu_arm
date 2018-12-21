@@ -4,6 +4,7 @@ export CROSS_COMPILE=arm-linux-gnueabi-
 PWD=$(shell pwd)
 OUT=${PWD}/out
 CPUS=$(shell grep processor /proc/cpuinfo |wc -l)
+export INSTALL_MOD_PATH=${PWD}/_rootfs/
 
 prepare:
 	apt install -y gcc-arm-linux-gnueabi make binutils libncurse* qemu-system-arm mtd-utils
@@ -29,6 +30,8 @@ kconfig:
 
 kernel:
 	make -j${CPUS} -C linux O=${OUT} all
+	make -j${CPUS} -C linux O=${OUT} modules
+	make -j${CPUS} -C linux O=${OUT} modules_install
 	cp ${OUT}/arch/arm/boot/zImage .
 	cp ${OUT}/arch/arm/boot/dts/vexpress*.dtb .
 
