@@ -1,9 +1,12 @@
 export ARCH=arm
-export CROSS_COMPILE=/opt/arm-buildroot/bin/arm-linux-
+export CROSS_COMPILE=arm-linux-gnueabi-
 
 PWD=$(shell pwd)
 OUT=${PWD}/out
 CPUS=$(shell grep processor /proc/cpuinfo |wc -l)
+
+prepare:
+	apt install -y gcc-arm-linux-gnueabi make binutils libncurse* qemu-system-arm mtd-utils
 
 rootfs:
 	-rm rootfs.img
@@ -14,6 +17,7 @@ rootfs:
 	cp -rf _rootfs/* ${PWD}/mnt_tmp
 	sync
 	umount ${PWD}/mnt_tmp
+	chmod a+rw rootfs.img
 
 defconfig:
 	[ -d ${OUT} ] || mkdir -p ${OUT}
