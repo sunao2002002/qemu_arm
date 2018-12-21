@@ -15,7 +15,7 @@ rootfs:
 	mke2fs rootfs.img
 	[ -d ${PWD}/mnt_tmp ] || mkdir -p ${PWD}/mnt_tmp
 	mount -t ext2 -o loop rootfs.img ${PWD}/mnt_tmp
-	cp -rf _rootfs/* ${PWD}/mnt_tmp
+	cp -rvf _rootfs/* ${PWD}/mnt_tmp
 	[ -d ${PWD}/mnt_tmp/proc ] || mkdir -p ${PWD}/mnt_tmp/proc
 	sync
 	umount ${PWD}/mnt_tmp
