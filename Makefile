@@ -5,6 +5,7 @@ PWD=$(shell pwd)
 OUT=${PWD}/out
 CPUS=$(shell grep processor /proc/cpuinfo |wc -l)
 export INSTALL_MOD_PATH=${PWD}/_rootfs/
+all:kenel rootfs
 
 prepare:
 	apt install -y gcc-arm-linux-gnueabi make binutils libncurse* qemu-system-arm mtd-utils
@@ -29,6 +30,7 @@ kconfig:
 	make -C linux O=${OUT} menuconfig
 
 kernel:
+	[-d ${OUT} ] || make defconfig
 	make -j${CPUS} -C linux O=${OUT} all
 	make -j${CPUS} -C linux O=${OUT} modules
 	make -j${CPUS} -C linux O=${OUT} modules_install
