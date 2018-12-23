@@ -42,14 +42,14 @@ run:
 		-kernel ./zImage \
 		-dtb vexpress-v2p-ca9.dtb \
 		-sd ./rootfs.img \
-		-append "root=/dev/mmcblk0 console=ttyAMA0 loglevel=8" 
+		-append "root=/dev/mmcblk0 console=ttyAMA0" 
 
 dbg:
 	qemu-system-arm -M vexpress-a9 -m 1024M -nographic \
 		-kernel ./zImage \
 		-dtb vexpress-v2p-ca9.dtb \
 		-sd ./rootfs.img \
-		-append "root=/dev/mmcblk0 console=ttyAMA0 loglevel=8" \
+		-append "root=/dev/mmcblk0 console=ttyAMA0" \
 		-s -S
 gdb:
 	${CROSS_COMPILE}gdb -q -s ${OUT}/vmlinux -d linux -ex "target remote localhost:1234"
